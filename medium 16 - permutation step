@@ -1,0 +1,31 @@
+function PermutationStep(num) { 
+
+  var arr = num.toFixed().split("");
+  for(i = 2; i <= arr.length; i ++) {
+    var temp = arr.slice().splice(arr.length - i, i).sort(function(a, b) { return b - a;});
+    if(arr[arr.length - i] == temp[0])
+      continue;
+    
+    var leading = arr[arr.length - i];
+    
+    var a = arr.slice().splice(0, arr.length - i);
+    temp = arr.slice().splice(arr.length - i, i).sort(function(a, b) { return a - b;});
+    for(var j = 0; j < temp.length; j ++) {
+      if(temp[j] > leading) {
+        var remove = temp.splice(j, 1)[0];
+        temp.unshift(remove);
+        break;
+      }
+    }
+    var b = temp.shift();
+    var c = temp.sort();
+    a.push(b);
+    
+    Array.prototype.push.apply(a, c);
+    var check = Number(a.join(""));
+    
+    if(check > num)
+      return check;
+  }
+  return -1         
+}
