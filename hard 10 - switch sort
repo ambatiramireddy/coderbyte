@@ -1,4 +1,6 @@
 function SwitchSort(arr) { 
+  // brute force check all permutations
+  // no good for arr length > 5
     
   var checkSorted = function(arr) { // checks if array is sorted
     for(var i = 0; i < arr.length; i ++) {
