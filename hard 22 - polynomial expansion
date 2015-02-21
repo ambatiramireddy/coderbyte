@@ -1,34 +1,36 @@
-function PolynomialExpansion(str) { 
+function PolynomialExpansion(str) { // works for expanding more than 2 polynomials too
   
   var variable = str.match(/[a-zA-Z]/gi)[0];
   
-  function clean(str, arr) { // converts str = "ax^b + cx + d" into [[a, c, d], [b, 1 0]] and stored into arr
-    var c = 0; // coefficient
-    var e = 1; // exponential
+  function clean(str, arr) { // converts str = "ax^b + cx + d" into [[a, c, d], [b, 1 0]] and store into arr, where x is variable
+    var c = 0; // coefficient index
+    var e = 1; // exponential index
     var regex = new RegExp("(\\+|-)?[0-9]+" + variable + "?(\\^(\\+|-)?[0-9]+)?", "i");
-	var match = str.match(regex); // find anything of the form +ax^b
+    var match = str.match(regex); // find anything of the form ax^b
     var term = match[0];
     
-    var ce; // store array [a, b]
+    var ce; // store a and b into arr
     if(term.indexOf('^') !== -1)
       ce = term.split(variable + '^').map(Number);
     else {
       ce = term.split(variable).map(Number);
       if(term.indexOf(variable) !== -1) ce[1] = 1; // if x to power of 1
     }
-	if(ce.length === 1) ce.push(0); // if no x
+    if(ce.length === 1) ce.push(0); // if no x
     
     arr[c].push(ce[c]);
     arr[e].push(ce[e]);
     
-    if(str.length === match[0].length)
+    if(str.length === match[0].length) // if this is the last term, then done
       return;
         
-    clean(str.substring(match.index + match[0].length), arr);
+    clean(str.substring(match.index + match[0].length), arr); // continue cleaning, excluding current term
   }
   
   function expand(arr) {
-    if(arr.length === 1)
+    // takes an array, each element being an array in format returned by clean function,
+    // and returns expanded polynomial in the same format
+    if(arr.length === 1) // if arr only has 1 polynomial, then done
       return arr[0];
     
     var first = arr[0];
@@ -36,7 +38,7 @@ function PolynomialExpansion(str) {
     var result = [[],[]];
     
     arr.shift(); // remove first element
-    arr[0] = result;
+    arr[0] = result; // replace the new first element with result of expansion of first & second
     
     for(var i = 0; i < first[0].length; i ++) {
       for(var j = 0; j < second[0].length; j ++) {
