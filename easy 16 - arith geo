@@ -1,20 +1,12 @@
-function ArithGeo(arr) { 
+function ArithGeo(arr) {   
+  if(arr.length === 1) return -1;
   
-  if(arr.length == 1) return -1;
-
-  var a = arr[arr.length - 1] - arr[arr.length - 2];
-  var g = arr[arr.length - 1] / arr[arr.length - 2];
-  
-  for(var i = 0; i < arr.length - 1; i ++) {
-    if(arr[i] + a !== arr[i + 1]) {
-      if(arr[i] * g !== arr[i + 1]) {
-        return -1;
-      } else {
-        return "Geometric";
-      }
-    } else {
-      return "Arithmetic";
-    }
+  var a = {};
+  var g = {};
+  for( var i = 1; i < arr.length; i++ ) {
+	a[arr[i] - arr[i - 1]] = arr[i] - arr[i - 1];
+    g[arr[i]/arr[i - 1]] = arr[i]/arr[i - 1];
   }
-  return arr;         
+  
+  return Object.keys(a).length === 1 ? 'Arithmetic' : Object.keys(g).length === 1 ? 'Geometric' : -1;         
 }
